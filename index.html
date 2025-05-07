@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS project</title>
+    <title>document</title>
 </head>
 <body>
     <h2>Notas ASignatura Front-End</h2>
@@ -13,8 +13,8 @@
             <input type="text" id="name" required>
         </div>
         <div>
-            <label for="name">Apellido:</label>
-            <input type="text" id="name" required>
+            <label for="lastname">Apellido:</label>
+            <input type="text" id="lastname" required>
         </div>
         <div>
             <label for="grade">Nota:</label>
@@ -22,6 +22,18 @@
         </div>
         <button type="submit">Guardar</button>
     </form>
+    <table id="studenttable" borde="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Nota</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- contenido de la tabla-->
+        </tbody>
+    </table>
     <script src="script.js"></script>
 </body>
 </html>
