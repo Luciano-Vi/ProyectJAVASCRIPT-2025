@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>document</title>
+    <style>
+        #average{
+            margin: 16px 0;
+            padding: 10px;
+            background-color: azure;
+            border: 1px;
+        }
+    </style>
 </head>
 <body>
     <h2>Notas ASignatura Front-End</h2>
+    <div id="average"> Promedio genereal del curso : N/A</div>
     <form id="studentform">
         <div>
             <label for="name">Nombre:</label>
@@ -22,7 +31,7 @@
         </div>
         <button type="submit">Guardar</button>
     </form>
-    <table id="studenttable" borde="1" cellpadding="8" cellspacing="0">
+    <table id="studenttable" border="1" cellpadding="8" cellspacing="0">
         <thead>
             <tr>
                 <th>Nombre</th>
