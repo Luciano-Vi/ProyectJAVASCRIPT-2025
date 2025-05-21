@@ -1,43 +1,57 @@
-const students=[];
-document.getElementById("studentform").addEventListener("submit",function(e){
-    e.preventDefault()
+const students = [];
 
-const name=document.getElementById("name").value.trim();
-const lastname=document.getElementById("lastname").value.trim();
-const grade=parseFloat(document.getElementById("grade").value);
+const spanAverage = document.getElementById("average-grade");
+const tableBody = document.querySelector("#studentsTable tbody")
+const form = document.getElementById("studentForm");
 
-if(!name || !lastname || isNaN(grade) || grade <1 || grade>7){
-    alert("error al ingresar los datos")
-    return
-}
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-const student={name,lastname,grade}
-      students.push(student)
-      console.log(students)
-      addStudentToTable(student)
-      calcularPromedio()
+    const name = document.getElementById("name").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const grade = document.getElementById("grade").value.trim();
+    const date = document.getElementById("date").value.trim();
+
+    const student = {name, lastName, grade, date};
+    students.push(student);
+    actualizarDisplayPromedio();
+
+    addStudentToTable(student);
+})
+
+function calcularPromedio() {
+    if (students.length === 1) return spanAverage.textContent = `${students[0].grade}`;
+    let average = 0
     
-    this.reset();
-});
-const tablebody=document.querySelector("#studenttable tbody");
-function addStudentToTable(student){
-    const row=document.createElement("tr");
-    row.innerHTML=`
-    <td>${student.name}</td>
-    <td>${student.lastname}</td>
-    <td>${student.grade}</td>
-    `,
-tablebody.appendChild(row)
-}
-
-const promedio= document.getElementById("average")
-
-function calcularPromedio(){
-    if(students.length===0){
-        promedio.texcontent="Promedio general del Curso : N/A"
+    for (let i = 0; i < students.length; i++) {
+        average += Math.floor(students[i].grade * 100) * 0.01;
     }
-    const total=students.reduce((sum,student)=>sum+student.grade,0);
-    const prom=total/students.length;
-    promedio.texcontent="Promedio general del Curso : "+prom.toFixed(2);
+    average = average / students.length;
+    return average.toFixed(1);
 }
 
+function actualizarDisplayPromedio() {
+    spanAverage.textContent = calcularPromedio();
+}
+
+function eliminarEstudiante(student, row) {
+    const index = students.indexOf(student, row);
+    if(index > -1) {
+        students.splice(index, 1);
+        row.remove();
+        actualizarDisplayPromedio();
+    }
+}
+
+
+function addStudentToTable(student) {
+    const row = document.createElement("tr");
+    row.innerHTML = 
+    `
+        <td>${student.name}</td>
+        <td>${student.lastName}</td>
+        <td>${student.grade}</td>
+        <td>${student.date}</td>
+    `;
+    tableBody.appendChild(row);
+}
