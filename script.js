@@ -28,6 +28,11 @@ function deleteEstudiante(student,row){
     }
 };
 
+function editEstudiante(student,row){
+    const index=students.indexOf(student);
+    
+};
+
 function calcularPromedio() {
     if (students.length === 1) return spanAverage.textContent = `${students[0].grade}`;
     let average = 0
@@ -61,11 +66,15 @@ function addStudentToTable(student) {
         <td>${student.lastName}</td>
         <td>${student.grade}</td>
         <td>${student.date}</td>
-        <td><button class="Delete">Eliminar</td>
+        <td><button class="Delete">Eliminar <button class="Edit">Editar</td>  
     `;
-    
+
 row.querySelector(".Delete").addEventListener("click",function(){
     deleteEstudiante(student,row);
+});
+
+row.querySelector(".Edit").addEventListener("click",function(){
+    editEstudiante(student,row);
 });
 
     tableBody.appendChild(row);
