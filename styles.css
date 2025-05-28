@@ -21,7 +21,7 @@ h1 {
     font-weight: bold;
     margin-bottom: 20px;
     color: #000000;
-    background-color: #6da3ef;
+    background-color: #ef766d;
 }
 
 #form-container {
@@ -42,7 +42,7 @@ th, td {
 }
 
 th {
-    background-color: rgb(120, 255, 178);
+    background-color: rgb(255, 129, 120);
 }
 
 @media screen and (max-width: 768px) {

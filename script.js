@@ -19,6 +19,15 @@ form.addEventListener('submit', (e) => {
     addStudentToTable(student);
 })
 
+function deleteEstudiante(student,row){
+    const index=students.indexOf(student);
+    if(index > -1){
+        students.splice(index,1)
+        row.remove();
+        calcularPromedio();
+    }
+};
+
 function calcularPromedio() {
     if (students.length === 1) return spanAverage.textContent = `${students[0].grade}`;
     let average = 0
@@ -52,6 +61,12 @@ function addStudentToTable(student) {
         <td>${student.lastName}</td>
         <td>${student.grade}</td>
         <td>${student.date}</td>
+        <td><button class="Delete">Eliminar</td>
     `;
+    
+row.querySelector(".Delete").addEventListener("click",function(){
+    deleteEstudiante(student,row);
+});
+
     tableBody.appendChild(row);
 }
