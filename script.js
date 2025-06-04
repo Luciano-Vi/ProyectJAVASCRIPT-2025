@@ -1,81 +1,184 @@
-const students = [];
+const estudiantes = [];
 
-const spanAverage = document.getElementById("average-grade");
-const tableBody = document.querySelector("#studentsTable tbody")
-const form = document.getElementById("studentForm");
+const formularioEstudiantes = document.getElementById("formularioEstudiantes");
+const promedio = document.getElementById("promedioCurso");
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const grade = document.getElementById("grade").value.trim();
-    const date = document.getElementById("date").value.trim();
+const tabla = document.querySelector("#tablaDeEstudiantes tbody");
 
-    const student = {name, lastName, grade, date};
-    students.push(student);
-    actualizarDisplayPromedio();
+const nombreEstSelec = document.getElementById("nombreEst");
+const apellidoEstSelec = document.getElementById("apellidoEst");
+const notaEstSelec = document.getElementById("notaEst");
 
-    addStudentToTable(student);
-})
+const formularioEditarEst = document.getElementById(
+  "formularioEditarEstudiante"
+);
 
-function deleteEstudiante(student,row){
-    const index=students.indexOf(student);
-    if(index > -1){
-        students.splice(index,1)
-        row.remove();
-        calcularPromedio();
-    }
-};
+const botonGuardarModal = document.getElementById("guardarCambios");
+const botonCancelarModal = document.getElementById("  ");
 
-function editEstudiante(student,row){
-    const index=students.indexOf(student);
-    
-};
+let estudianteSeleccionado = "";
+let rowSeleccionada = "";
 
-function calcularPromedio() {
-    if (students.length === 1) return spanAverage.textContent = `${students[0].grade}`;
-    let average = 0
-    
-    for (let i = 0; i < students.length; i++) {
-        average += Math.floor(students[i].grade * 100) * 0.01;
-    }
-    average = average / students.length;
-    return average.toFixed(1);
+function errorNombreOApellido(sel, campo) {
+  const valor = sel.value.trim();
+  const regex = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
+
+  if (valor === "") {
+    sel.setCustomValidity(`Por favor, complete el campo '${campo}'`);
+  } else if (!regex.test(valor)) {
+    sel.setCustomValidity(`Por favor, ingrese solo letras.`);
+  } else {
+    sel.setCustomValidity("");
+  }
+  return sel.reportValidity(); 
 }
 
-function actualizarDisplayPromedio() {
-    spanAverage.textContent = calcularPromedio();
+function errorNota(num) {
+  const nota = parseFloat(num.value);
+
+
+  if (num.validity.valueMissing) {
+    num.setCustomValidity("Por favor, ingrese una nota.");
+  } else if (isNaN(nota)) {
+    num.setCustomValidity("Por favor, ingrese solo números.");
+ 
+  } else if (nota < 1 || nota > 7) {
+    num.setCustomValidity("Por favor, ingrese una nota entre 1 y 7.");
+  } else if (!Number.isInteger(nota * 10)) {
+    num.setCustomValidity("Por favor, ingrese notas con máximo un decimal.");
+  } else {
+
+    num.setCustomValidity("");
+  }
+  return num.reportValidity();
 }
 
-function eliminarEstudiante(student, row) {
-    const index = students.indexOf(student, row);
-    if(index > -1) {
-        students.splice(index, 1);
-        row.remove();
-        actualizarDisplayPromedio();
-    }
+function validarInputs(selNombre, selApellido, selNota) {
+  [selNombre, selApellido, selNota].forEach((input) => {
+    input.addEventListener("input", () => {
+      input.setCustomValidity("");
+    });
+  });
+
+  errorNota(selNota);
+  errorNombreOApellido(selApellido, "Apellido");
+  errorNombreOApellido(selNombre, "Nombre");
+
+  return (
+    !selNombre.checkValidity() ||
+    !selApellido.checkValidity() ||
+    !selNota.checkValidity()
+  );
 }
 
+function crearBoton(tipo, accion) {
+  const boton = document.createElement("button");
 
-function addStudentToTable(student) {
-    const row = document.createElement("tr");
-    row.innerHTML = 
-    `
-        <td>${student.name}</td>
-        <td>${student.lastName}</td>
-        <td>${student.grade}</td>
-        <td>${student.date}</td>
-        <td><button class="Delete">Eliminar <button class="Edit">Editar</td>  
-    `;
+  boton.className = `btn btn-${tipo} ${accion} accion p-1 px-sm-2 px-md-3 fs-6 m-1 my-sm-0 mx-sm-1`;
+  boton.textContent = accion;
 
-row.querySelector(".Delete").addEventListener("click",function(){
-    deleteEstudiante(student,row);
+  if (accion === "Editar") {
+    boton.setAttribute("data-bs-toggle", "modal");
+    boton.setAttribute("data-bs-target", "#Editar");
+  }
+  return boton;
+}
+
+const valorInicial = 0;
+function calcular() {
+  if (estudiantes.length === 0) {
+    promedio.textContent = "Promedio de Calificaciones: No Disponible";
+  } else {
+    const totalDeNotas = estudiantes.reduce((acc, estudiante) => {
+      return acc + estudiante.nota;
+    }, valorInicial);
+    const promedioGeneral = totalDeNotas / estudiantes.length;
+    promedio.textContent = `Promedio General del Curso: ${promedioGeneral.toFixed(
+      2
+    )}`;
+}};
+
+formularioEstudiantes.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const selNombre = document.getElementById("nombre");
+  const selApellido = document.getElementById("apellido");
+  const selNota = document.getElementById("nota");
+
+  const nombre = selNombre.value.trim();
+  const apellido = selApellido.value.trim();
+  const nota = parseFloat(selNota.value);
+
+  if (validarInputs(selNombre, selApellido, selNota)) {
+    return;
+  }
+
+  const estudiante = { nombre, apellido, nota };
+  estudiantes.push(estudiante);
+  agregarEstudiante(estudiante);
+  calcular();
+  e.target.reset(); 
 });
 
-row.querySelector(".Edit").addEventListener("click",function(){
-    editEstudiante(student,row);
+function agregarEstudiante(est) {
+  const row = document.createElement("tr");
+  [
+    est.nombre,
+    est.apellido,
+    est.nota.toFixed(1),
+  ].forEach((valor, i) => {
+    const celdaValor = document.createElement("td");
+    celdaValor.textContent = valor;
+    row.appendChild(celdaValor);
+  });
+  const rowBotones = document.createElement("td");
+  const botonEditar = crearBoton("success", "Editar");
+  const botonBorrar = crearBoton("danger", "Borrar");
+  botonEditar.addEventListener("click", () => {
+    editarEstudiante(est, row);
+  });
+  botonBorrar.addEventListener("click", () => {
+    borrarEstudiante(est, row);
+  });
+  rowBotones.appendChild(botonEditar);
+  rowBotones.appendChild(botonBorrar);
+  row.appendChild(rowBotones);
+  tabla.appendChild(row);
+}
+
+function borrarEstudiante(est, row) {
+  const index = estudiantes.indexOf(est);
+  if (index >= 0) {
+    estudiantes.splice(index, 1);
+    row.remove();
+    calcular();
+  }
+}
+function editarEstudiante(est, row) {
+  estudianteSeleccionado = est;
+  rowSeleccionada = row;
+  nombreEstSelec.value = est.nombre;
+  apellidoEstSelec.value = est.apellido;
+  notaEstSelec.value = est.nota;
+}
+
+botonCancelarModal.addEventListener("click", () => {
+  nombreEstSelec.value = "";
+  apellidoEstSelec.value = "";
+  notaEstSelec.value = "";
+  estudianteSeleccionado = "";
+  rowSeleccionada = "";
 });
 
-    tableBody.appendChild(row);
-}
+botonGuardarModal.addEventListener("click", () => {
+  if (validarInputs(nombreEstSelec, apellidoEstSelec, notaEstSelec)) return;
+  estudianteSeleccionado.nombre = nombreEstSelec.value.trim();
+  estudianteSeleccionado.apellido = apellidoEstSelec.value.trim();
+  estudianteSeleccionado.nota = parseFloat(notaEstSelec.value);
+  const celdasRow = rowSeleccionada.children;
+  celdasRow[0].textContent = estudianteSeleccionado.nombre;
+  celdasRow[1].textContent = estudianteSeleccionado.apellido;
+  celdasRow[2].textContent = estudianteSeleccionado.nota.toFixed(1);
+  calcular();
+  botonCancelarModal.click();
+});
