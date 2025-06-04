@@ -2,20 +2,22 @@ const estudiantes = [];
 
 const formularioEstudiantes = document.getElementById("formularioEstudiantes");
 const promedio = document.getElementById("promedioCurso");
-
+const total = document.getElementById("total");
+const eximidos = document.getElementById("Eximidos");
+const examen = document.getElementById("Examen");
 
 const tabla = document.querySelector("#tablaDeEstudiantes tbody");
 
-const nombreEstSelec = document.getElementById("nombreEst");
-const apellidoEstSelec = document.getElementById("apellidoEst");
-const notaEstSelec = document.getElementById("notaEst");
+const nombreEstSelec = document.getElementById("nombreSelecionado");
+const apellidoEstSelec = document.getElementById("apellidoSelecionado");
+const notaEstSelec = document.getElementById("notaSelecionado");
 
 const formularioEditarEst = document.getElementById(
   "formularioEditarEstudiante"
 );
 
 const botonGuardarModal = document.getElementById("guardarCambios");
-const botonCancelarModal = document.getElementById("  ");
+const botonCancelarModal = document.getElementById("cancelarCambios");
 
 let estudianteSeleccionado = "";
 let rowSeleccionada = "";
@@ -85,19 +87,43 @@ function crearBoton(tipo, accion) {
   return boton;
 }
 
-const valorInicial = 0;
-function calcular() {
-  if (estudiantes.length === 0) {
-    promedio.textContent = "Promedio de Calificaciones: No Disponible";
-  } else {
-    const totalDeNotas = estudiantes.reduce((acc, estudiante) => {
-      return acc + estudiante.nota;
-    }, valorInicial);
-    const promedioGeneral = totalDeNotas / estudiantes.length;
-    promedio.textContent = `Promedio General del Curso: ${promedioGeneral.toFixed(
-      2
-    )}`;
-}};
+ const valorInicial = 0;
+ function calcular() {
+   if (estudiantes.length === 0) {
+     promedio.textContent = "Promedio de Calificaciones: No Disponible";
+     total.textContent = "Total de Estudiantes: No Disponible";
+     examen.textContent = "Estudiantes Con Examen: No Disponible";
+     eximidos.textContent = "Estudiantes Eximidos: No Disponible";
+   } else {
+     const totalDeNotas = estudiantes.reduce((acc, estudiante) => {
+       return acc + estudiante.nota;
+     }, valorInicial);
+     const promedioGeneral = totalDeNotas / estudiantes.length;
+     promedio.textContent = `Promedio General del Curso: ${promedioGeneral.toFixed(
+       2
+     )}`;
+ 
+     total.textContent = `Total de Estudiantes: ${estudiantes.length}`;
+ 
+     const cantidadEximidos = estudiantes.reduce(
+       (totalEximidos, estudiante) => {
+         if (estudiante.nota > 5.0) totalEximidos++;
+         return totalEximidos;
+       },
+       valorInicial
+     );
+     eximidos.textContent = `Estudiantes Eximidos: ${cantidadEximidos}`;
+ 
+     const cantidadExamen = estudiantes.reduce(
+       (totalExamen, estudiante) => {
+         if (estudiante.nota <= 5.0) totalExamen++;
+         return totalExamen;
+       },
+       valorInicial
+     );
+     examen.textContent = `Estudiantes Con Examen: ${cantidadExamen}`;
+   }
+ };
 
 formularioEstudiantes.addEventListener("submit", (e) => {
   e.preventDefault();

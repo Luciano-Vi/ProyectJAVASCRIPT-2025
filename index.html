@@ -16,10 +16,7 @@
           Notas de la asignatura Front-End
         </h1>
       </div>
-      <div
-        id="promedio"
-        class="container col-10 col-sm-11 col-md-9 col-lg-8 col-xl-5"
-      >
+      <div id="promedio"class="container col-10 col-sm-11 col-md-9 col-lg-8 col-xl-5">
         <h2 class="fw-bold fs-5" id="promedioCurso">
           Promedio de Calificaciones: No Disponible
         </h2>
@@ -36,35 +33,52 @@
           <div class="form-group">
             <label for="nombre">Nombre:</label>
             <input
-              type="text"
-              class="form-control input w-90"
-              id="nombre"
-              autocomplete="off"
+              type="text" class="form-control input w-90" id="nombre" autocomplete="off"
             />
           </div>
           <div class="form-group">
             <label for="apellido">Apellido:</label>
             <input
-              type="text"
-              class="form-control input w-90"
-              id="apellido"
-              autocomplete="off"
+              type="text" class="form-control input w-90" id="apellido" autocomplete="off"
             />
           </div>
           <div class="form-group">
-            <label for="nota">Calificación:</label>
+            <label for="nota">Nota:</label>
             <input
-              type="text"
-              class="form-control input w-90"
-              id="nota"
-              autocomplete="off"
+              type="text" class="form-control input w-90" id="nota" autocomplete="off"
             />
           </div>
-          <button class="btn btn-primary px-3 py-2" id="boton" type="submit">
+          <button class="btn btn-danger px-3 py-2" id="boton" type="submit">
             Agregar Estudiante
           </button>
         </form>
       </div>
+    </div>
+    <div class="container col-10 col-sm-11 col-md-9 col-lg-8 col-xl-5">
+      <div class="card border-dark mb-3">
+        <div class="card-body text py-2">
+          <h5 class="card-title fs-6 my-0" id="total">
+            Total de Estudiantes: No Disponible
+          </h5>
+        </div>
+      </div>
+      <div class="card border-dark mb-3">
+        <div class="card-body text py-2">
+          <h5 class="card-title fs-6 my-0" id="Examen">
+            Estudiantes Con Examen: No Disponible
+          </h5>
+        </div>
+      </div>
+      <div class="card border-dark mb-3">
+        <div class="card-body text py-2">
+          <h5 class="card-title fs-6 my-0" id="Eximidos">
+            Estudiantes Eximidos: No Disponible
+          </h5>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
     </div>
     <div
       class="container col-9 col-sm-10 col-md-12 col-xl-9"
@@ -104,28 +118,19 @@
                 <div class="form-group">
                   <label for="nombreEst">Nombre:</label>
                   <input
-                    type="text"
-                    class="form-control input w-90"
-                    id="nombreEst"
-                    autocomplete="off"
+                    type="text" class="form-control input w-90" id="nombreSelecionado" autocomplete="off"
                   />
                 </div>
                 <div class="form-group">
                   <label for="apellidoEst">Apellido:</label>
                   <input
                     type="text"
-                    class="form-control input w-90"
-                    id="apellidoEst"
-                    autocomplete="off"
+                    class="form-control input w-90" id="apellidoSelecionado" autocomplete="off"
                   />
                 </div>
                 <div class="form-group">
                   <label for="notaEst">Calificación:</label>
-                  <input
-                    type="text"
-                    class="form-control input w-90"
-                    id="notaEst"
-                    autocomplete="off"
+                  <input type="text" class="form-control input w-90" id="notaSelecionado" autocomplete="off"
                   />
                 </div>
               </form>
@@ -134,13 +139,11 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-              id="cancelarCambios"
+              class="btn btn-secondary" data-bs-dismiss="modal" id="cancelarCambios"
             >
               Cancelar
             </button>
-            <button type="button" class="btn btn-primary" id="guardarCambios">
+            <button type="button" class="btn btn-danger" id="guardarCambios">
               Guardar Cambios
             </button>
           </div>
